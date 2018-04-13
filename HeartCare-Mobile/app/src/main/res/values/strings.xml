@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">HeartCare</string>
+    <string name="title_pressure">Presión</string>
+    <string name="title_chart">Gráfica</string>
+    <string name="title_report">Reporte</string>
+    <string name="title_settings">Configuración</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
