@@ -7,15 +7,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link ChartFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ChartFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class ChartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -33,24 +41,6 @@ public class ChartFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChartFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChartFragment newInstance(String param1, String param2) {
-        ChartFragment fragment = new ChartFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +54,36 @@ public class ChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chart, null);
+        View view = inflater.inflate(R.layout.fragment_chart, null);
+        LineChart chart = (LineChart) view.findViewById(R.id.chart);
+        float[][] points = {{0, 0}, {1, 1}, {2, 0.5f}, {3, 3}, {4, 2}, {5, 5}};
+        List<Entry> entries = new ArrayList<>();
+        for (float[] point : points) {
+            entries.add(new Entry(point[0], point[1]));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, "Label");
+        dataSet.setDrawFilled(true);
+        dataSet.setLineWidth(2f);
+
+        LineData lineData = new LineData(dataSet);
+        chart.setData(lineData);
+
+        chart.setDrawBorders(false);
+        chart.setDrawMarkers(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setDrawAxisLine(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        YAxis yAxisleft = chart.getAxisLeft();
+        yAxisleft.setAxisMinimum(0f);
+
+        YAxis yAxisright = chart.getAxisRight();
+        yAxisright.setEnabled(false);
+
+
+        chart.invalidate();
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

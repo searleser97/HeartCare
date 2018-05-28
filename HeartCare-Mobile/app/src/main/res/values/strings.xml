@@ -4,6 +4,7 @@
     <string name="title_chart">Gráfica</string>
     <string name="title_report">Reporte</string>
     <string name="title_settings">Configuración</string>
+    <string name="title_bluetooth">Conectar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

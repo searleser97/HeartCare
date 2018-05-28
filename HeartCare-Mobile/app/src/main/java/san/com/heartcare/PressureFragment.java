@@ -1,12 +1,28 @@
 package san.com.heartcare;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -60,11 +76,43 @@ public class PressureFragment extends Fragment {
         }
     }
 
+    public LineChart chart = null;
+//   public List<Point> points = Arrays.asList(new Point(1, 1), new Point(2, 0.5f), new Point(3, 3), new Point(4, 2), new Point(5, 5));
+    public List<Entry> entries = new ArrayList<>();
+    public LineDataSet dataSet = null;
+    public LineData data = null;
+    public int aux = 1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_pressure, container, false);
+        chart = view.findViewById(R.id.live_chart);
+
+        entries.add(new Entry(0, 100));
+
+        dataSet = new LineDataSet(entries, "Presión");
+        dataSet.setLineWidth(2f);
+        dataSet.setDrawValues(false);
+
+        data = new LineData(dataSet);
+        chart.setData(data);
+
+        chart.setNoDataText("No hay Conexión con la pulsera");
+        chart.setDrawBorders(false);
+        chart.setDrawMarkers(false);
+        chart.getDescription().setText("PPM");
+        chart.getLegend().setEnabled(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setEnabled(false);
+
+        YAxis yAxisright = chart.getAxisRight();
+        yAxisright.setEnabled(false);
+
+        chart.invalidate();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pressure, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,4 +153,6 @@ public class PressureFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

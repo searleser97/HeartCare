@@ -34,6 +34,7 @@ public class BluetoothConnectionService {
 
     private final BluetoothAdapter mBluetoothAdapter;
     private Context mContext;
+    private Handler mHandler;
 
     private AcceptThread mInsecureAcceptThread;
 
@@ -44,7 +45,8 @@ public class BluetoothConnectionService {
 
     private ConnectedThread mConnectedThread;
 
-    public BluetoothConnectionService(Context context) {
+    public BluetoothConnectionService(Context context, Handler mHandler) {
+        this.mHandler = mHandler;
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         start();
@@ -282,23 +284,7 @@ public class BluetoothConnectionService {
             }
         }
 
-        Handler mHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                byte[] writeBuf = (byte[]) msg.obj;
-                int begin = (int)msg.arg1;
-                int end = (int)msg.arg2;
-                switch(msg.what) {
-                    case 1:
-                        String writeMessage = new String(writeBuf);
-                        writeMessage = writeMessage.substring(begin, end);
-//                        Toast.makeText(mContext, writeMessage, Toast.LENGTH_LONG).show();
-                        TextView pressureText = (TextView) ((Activity) mContext).findViewById(R.id.editText);
-                        pressureText.setText("BPM: " + writeMessage);
-                        break;
-                }
-            }
-        };
+
 
         //Call this from the main activity to send data to the remote device
         public void write(byte[] bytes) {

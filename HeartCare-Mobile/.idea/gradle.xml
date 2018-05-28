@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="/media/san/D0A8DE65A8DE4A1C/HomeW/CODE/HeartCare" />
-            <option value="/media/san/D0A8DE65A8DE4A1C/HomeW/CODE/HeartCare/app" />
+            <option value="/media/san/D0A8DE65A8DE4A1C/HomeW/CODE/HeartCare/HeartCare-Mobile" />
+            <option value="/media/san/D0A8DE65A8DE4A1C/HomeW/CODE/HeartCare/HeartCare-Mobile/app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
