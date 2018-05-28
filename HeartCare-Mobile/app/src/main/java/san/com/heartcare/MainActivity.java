@@ -11,8 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 
 
@@ -81,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 case 1:
                     String writeMessage = new String(writeBuf);
                     writeMessage = writeMessage.substring(begin, end);
+                    try {
                         if (fragmentId == 1) {
                             TextView pressureText = findViewById(R.id.pressure);
                             pressureText.setText("BPM: " + writeMessage);
@@ -99,8 +98,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                             ((PressureFragment) fragment).chart.invalidate();
                         }
-
-                    break;
+                    } catch (java.lang.NullPointerException e) {
+                        System.out.println(e.getStackTrace());
+                    }
             }
         }
     };
