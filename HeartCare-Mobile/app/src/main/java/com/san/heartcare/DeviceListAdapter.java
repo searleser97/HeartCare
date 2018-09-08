@@ -1,4 +1,4 @@
-package san.com.heartcare;
+package com.san.heartcare;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;

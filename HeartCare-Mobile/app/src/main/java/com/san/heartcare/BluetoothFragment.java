@@ -1,4 +1,4 @@
-package san.com.heartcare;
+package com.san.heartcare;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -11,10 +11,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 

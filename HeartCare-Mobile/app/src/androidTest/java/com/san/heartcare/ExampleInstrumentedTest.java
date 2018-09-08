@@ -1,4 +1,4 @@
-package san.com.heartcare;
+package com.san.heartcare;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("san.com.heartcare", appContext.getPackageName());
+        assertEquals("san.com.com.san.com.san.heartcare", appContext.getPackageName());
     }
 }

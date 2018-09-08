@@ -1,17 +1,12 @@
-package san.com.heartcare;
+package com.san.heartcare;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,19 +16,15 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PressureFragment.OnFragmentInteractionListener} interface
+ * {@link ChartFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PressureFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class PressureFragment extends Fragment {
+public class ChartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,26 +36,8 @@ public class PressureFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PressureFragment() {
+    public ChartFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PressureFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PressureFragment newInstance(String param1, String param2) {
-        PressureFragment fragment = new PressureFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -76,42 +49,38 @@ public class PressureFragment extends Fragment {
         }
     }
 
-    public LineChart chart = null;
-//   public List<Point> points = Arrays.asList(new Point(1, 1), new Point(2, 0.5f), new Point(3, 3), new Point(4, 2), new Point(5, 5));
-    public List<Entry> entries = new ArrayList<>();
-    public LineDataSet dataSet = null;
-    public LineData data = null;
-    public int aux = 1;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pressure, container, false);
-        chart = view.findViewById(R.id.live_chart);
-
-        entries.add(new Entry(0, 100));
-
-        dataSet = new LineDataSet(entries, "Presión");
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_chart, null);
+        LineChart chart = (LineChart) view.findViewById(R.id.chart);
+        float[][] points = {{0, 0}, {1, 1}, {2, 0.5f}, {3, 3}, {4, 2}, {5, 5}};
+        List<Entry> entries = new ArrayList<>();
+        for (float[] point : points) {
+            entries.add(new Entry(point[0], point[1]));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, "Label");
+        dataSet.setDrawFilled(true);
         dataSet.setLineWidth(2f);
-        dataSet.setDrawValues(false);
 
-        data = new LineData(dataSet);
-        chart.setData(data);
+        LineData lineData = new LineData(dataSet);
+        chart.setData(lineData);
 
-        chart.setNoDataText("No hay Conexión con la pulsera");
         chart.setDrawBorders(false);
         chart.setDrawMarkers(false);
-        chart.getDescription().setText("PPM");
-        chart.getLegend().setEnabled(false);
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        YAxis yAxisleft = chart.getAxisLeft();
+        yAxisleft.setAxisMinimum(0f);
 
         YAxis yAxisright = chart.getAxisRight();
         yAxisright.setEnabled(false);
 
         chart.invalidate();
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -153,6 +122,4 @@ public class PressureFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
 }

@@ -1,4 +1,4 @@
-package san.com.heartcare;
+package com.san.heartcare;
 
 import org.junit.Test;
 

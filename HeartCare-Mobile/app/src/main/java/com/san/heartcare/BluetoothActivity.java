@@ -1,4 +1,4 @@
-package san.com.heartcare;
+package com.san.heartcare;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 

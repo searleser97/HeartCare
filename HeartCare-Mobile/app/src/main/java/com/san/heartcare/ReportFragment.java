@@ -1,12 +1,26 @@
-package san.com.heartcare;
+package com.san.heartcare;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.san.heartcare.models.HeartRate;
 
 
 /**
@@ -28,6 +42,9 @@ public class ReportFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private DatabaseReference mDB;
+    private FirebaseAuth mAuth;
 
     public ReportFragment() {
         // Required empty public constructor
@@ -58,13 +75,58 @@ public class ReportFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mDB = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_report, container, false);
+        final TableLayout tableLayout = view.findViewById(R.id.table_layout);
+        final TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(0,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f);
+
+        mDB.child("users").child(mAuth.getCurrentUser().getUid()).child("heart_rates").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                    mDB.child("heart_rates").child(snapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            HeartRate heartRate = snapshot.getValue(HeartRate.class);
+                            TableRow tr = new TableRow(getActivity());
+                            TextView textView_timestamp = new TextView(getActivity());
+                            textView_timestamp.setGravity(Gravity.CENTER);
+                            textView_timestamp.setLayoutParams(layoutParams);
+                            textView_timestamp.setText(heartRate.timestamp);
+                            TextView textView_bpm = new TextView(getActivity());
+                            textView_bpm.setGravity(Gravity.CENTER);
+                            textView_bpm.setLayoutParams(layoutParams);
+                            textView_bpm.setText(heartRate.bpm);
+
+                            tr.addView(textView_timestamp);
+                            tr.addView(textView_bpm);
+                            tableLayout.addView(tr);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
