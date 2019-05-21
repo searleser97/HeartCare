@@ -263,7 +263,7 @@ public class BluetoothConnectionService {
                     for(int i = begin; i < bytes; i++) {
                         if(buffer[i] == "\n".getBytes()[0]) {
                             String incomingMessage = new String(buffer, 0, bytes);
-                            System.out.println("BPM: " + incomingMessage);
+//                            System.out.println("BPM: " + incomingMessage);
                             mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
                             begin = i + 1;
                             if(i == bytes - 1) {

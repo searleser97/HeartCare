@@ -2,29 +2,48 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".PressureFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/live_chart"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_margin="10dp"/>
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/pressure"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="163dp"
-            android:text="0"
-            android:textAlignment="center" />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/live_chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="10dp"/>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/pressure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="0"
+                android:textAlignment="center" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/live_chart2"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/sensor2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:text="0"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+
+    </ScrollView>
 
 </FrameLayout>

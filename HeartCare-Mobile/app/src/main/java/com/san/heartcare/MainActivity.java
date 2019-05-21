@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.san.heartcare.models.HeartRate;
 import com.san.heartcare.models.Location;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
@@ -96,16 +97,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         @Override
         public void handleMessage(Message msg) {
             byte[] writeBuf = (byte[]) msg.obj;
-            int begin = (int)msg.arg1;
-            int end = (int)msg.arg2;
+            int begin = msg.arg1;
+            int end = msg.arg2;
             switch(msg.what) {
                 case 1:
                     String writeMessage = new String(writeBuf);
-                    String bpm = writeMessage.substring(begin, end - 1);
+                    String[] input = writeMessage.substring(begin, end - 1).split(" ");
+                    String sensor1 = input[0];
+                    String sensor2 = input[1];
                     try {
                         if (fragmentId == 1) {
                             TextView pressureText = findViewById(R.id.pressure);
-                            pressureText.setText("BPM: " + bpm);
+                            pressureText.setText(sensor1 + " ");
 
                             if (((PressureFragment) fragment).aux == 1) {
                                 ((PressureFragment) fragment).dataSet.removeLast();
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                             ((PressureFragment) fragment).dataSet
                                     .addEntry(new Entry(((PressureFragment) fragment).dataSet.getEntryCount(),
-                                            Float.parseFloat(bpm)));
+                                            Float.parseFloat(sensor1)));
 
                             ((PressureFragment) fragment).data.notifyDataChanged();
                             ((PressureFragment) fragment).chart.notifyDataSetChanged();
@@ -126,10 +129,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                             String heartRateId = mDB.child("heart_rates").push().getKey();
                             mDB.child("users").child(mAuth.getCurrentUser().getUid()).child("heart_rates").child(heartRateId).setValue(true);
-                            mDB.child("heart_rates").child(heartRateId).setValue(new HeartRate(bpm, new Location(123, 222), timestamp.toString()));
+                            mDB.child("heart_rates").child(heartRateId).setValue(new HeartRate(sensor1, new Location(123, 222), timestamp.toString()));
+
+
+                            TextView sensor2Text = findViewById(R.id.sensor2);
+                            sensor2Text.setText(sensor2 + " units");
+
+                            if (((PressureFragment) fragment).aux2 == 1) {
+                                ((PressureFragment) fragment).dataSet2.removeLast();
+                                ((PressureFragment) fragment).aux2 = 0;
+                            }
+
+                            ((PressureFragment) fragment).dataSet2
+                                    .addEntry(new Entry(((PressureFragment) fragment).dataSet2.getEntryCount(),
+                                            Float.parseFloat(sensor2)));
+
+                            ((PressureFragment) fragment).data2.notifyDataChanged();
+                            ((PressureFragment) fragment).chart2.notifyDataSetChanged();
+
+                            ((PressureFragment) fragment).chart2.invalidate();
                         }
                     } catch (java.lang.NullPointerException e) {
-                        System.out.println(e.getStackTrace());
+                        System.out.println(Arrays.toString(e.getStackTrace()));
                     }
             }
         }

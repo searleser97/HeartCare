@@ -1,6 +1,7 @@
 package com.san.heartcare;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +72,11 @@ public class PressureFragment extends Fragment {
         }
     }
 
-    public LineChart chart = null;
-    public List<Entry> entries = new ArrayList<>();
-    public LineDataSet dataSet = null;
-    public LineData data = null;
-    public int aux = 1;
+    public LineChart chart = null, chart2 = null;
+    public List<Entry> entries = new ArrayList<>(), entries2 = new ArrayList<>();
+    public LineDataSet dataSet = null, dataSet2 = null;
+    public LineData data = null, data2 = null;
+    public int aux = 1, aux2 = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +87,7 @@ public class PressureFragment extends Fragment {
         entries.add(new Entry(0, 100));
 
         dataSet = new LineDataSet(entries, "Presión");
+        dataSet.setColors(Color.parseColor("#d60c0c"));
         dataSet.setLineWidth(2f);
         dataSet.setDrawValues(false);
 
@@ -104,7 +107,32 @@ public class PressureFragment extends Fragment {
         yAxisright.setEnabled(false);
 
         chart.invalidate();
-        // Inflate the layout for this fragment
+
+        chart2 = view.findViewById(R.id.live_chart2);
+
+        entries2.add(new Entry(0, 100));
+
+        dataSet2 = new LineDataSet(entries2, "Presión");
+        dataSet2.setColors(Color.parseColor("#0c0cd6"));
+        dataSet2.setLineWidth(2f);
+        dataSet2.setDrawValues(false);
+
+        data2 = new LineData(dataSet2);
+        chart2.setData(data2);
+
+        chart2.setNoDataText("No hay Conexión con la pulsera");
+        chart2.setDrawBorders(false);
+        chart2.setDrawMarkers(false);
+        chart2.getDescription().setText("PPM");
+        chart2.getLegend().setEnabled(false);
+
+        XAxis xAxis2 = chart2.getXAxis();
+        xAxis2.setEnabled(false);
+
+        YAxis yAxisright2 = chart2.getAxisRight();
+        yAxisright2.setEnabled(false);
+
+        chart2.invalidate();
         return view;
     }
 
